@@ -11,13 +11,31 @@ public class TextMsgParse {
 
 	public String dealMsg(TextMsgBean bean) {
 
-		String replyStr = "success";
+		/* 异常信息处理 */
 		String content = bean.getContent();
 		if (content == null || content.isEmpty()) {
-			replyStr = doTextReply(bean, "你说话了么？宝宝没有听到，再说一遍吧！");
- 		}
+			return doTextReply(bean, "你说话了么？宝宝没有听到，再说一遍吧！");
+		}
+
+		/* 消息处理 */
+		String replyStr = "success";
+		if (content.contains("海苔")) {
+			replyStr = doReplyBySeaweed(bean, content);
+		} else if (content.contains("天气")) {
+			replyStr = doReplyByWeather(bean, content);
+		}
 
 		return replyStr;
+	}
+
+	private String doReplyByWeather(TextMsgBean bean, String content) {
+		String str = "今天天气很好";
+		return doTextReply(bean, str);
+	}
+
+	private String doReplyBySeaweed(TextMsgBean bean, String content) {
+		String str = "海苔真好吃，营养又健康";
+		return doTextReply(bean, str);
 	}
 
 	private String doTextReply(TextMsgBean bean, String content) {
